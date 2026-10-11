@@ -1,0 +1,24 @@
+<h2>Buscar deputados por partido</h2>
+
+<input type="text" [formControl]="partido" placeholder="Sigla do partido (ex.: PT)" />
+<button (click)="buscar()">Buscar</button>
+
+@if (partido.invalid && (partido.touched || partido.dirty)) {
+  @if (partido.errors?.['required']) { <small>O partido é obrigatório.</small> }
+  @if (partido.errors?.['minlength']) { <small>Digite pelo menos 2 caracteres.</small> }
+  @if (partido.errors?.['maxlength']) { <small>Máximo de 15 caracteres.</small> }
+  @if (partido.errors?.['pattern']) { <small>Use apenas letras.</small> }
+}
+
+@if (deputados().length === 0) {
+  <p>Nenhum resultado para exibir.</p>
+}
+
+<ul>
+  @for (d of deputados(); track d.id) {
+    <li>
+      <img [src]="d.urlFoto" [alt]="d.nome" width="48" height="64" />
+      <strong>{{ d.nome }}</strong> — {{ d.siglaPartido }}/{{ d.siglaUf }}
+    </li>
+  }
+</ul>
